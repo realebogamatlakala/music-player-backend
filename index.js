@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const tackRoutes = require('./routes/songsroutes');
+const trackRoutes = require('./routes/songsroutes');
 const PORT = process.env.PORT || 3000;
 const app = express();
 const cors= require("cors")
@@ -17,7 +17,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/newMusic',
     .catch((e)=> console.log("Couldn't connect to DB: ", e));
 
 
-app.use('/api', tackRoutes);
+app.use('/api', trackRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

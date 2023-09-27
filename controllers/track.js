@@ -2,11 +2,11 @@ const Track = require('../models/track.model');
 
 exports.uploadSong = async (req, res) => {
   try {
-    const { title, artist, genre } = req.body;
+    const { title, artist, genre, album } = req.body;
     const url = req.file.path
     
 
-    const song = new Track({ title, artist, genre, url  });
+    const song = new Track({ title, artist, genre, album, url  });
     await song.save();
 
     res.status(201).json({ message: 'Song uploaded successfully', song });
@@ -23,3 +23,16 @@ exports.getAllSongs = async(req, res)=>{
         res.status(500).json({err: "Internal Server Error"})
     }
 }
+
+// exports.deleteOne = async(req, res) => {
+//   const id = req.file.path
+//   songs
+//       .remove({ _id: id })
+//       .then(result => {
+//           res.status(200).json(result);
+//       })
+//       .catch(err => {
+//           console.log(err);
+//           res.status(500).json({"Error deleting the song" : err});
+//       });
+// };
