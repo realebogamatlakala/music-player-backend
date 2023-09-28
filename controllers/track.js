@@ -24,6 +24,24 @@ exports.getAllSongs = async(req, res)=>{
     }
 }
 
+exports.getAudioById = async(req, res) => {
+  const audioId = req.file.path
+
+  try{
+    const audio = await Track.findById(audioId);
+    if(!audio){
+      return res.status(404).json({err: "Audio not found!"})
+    }else{
+      res.set('Content-Type', audio/mp3)
+      res.send(audio.AudioData);
+    }
+  }catch(error){
+    res.status(500).json({error: "Could not recieve audio"})
+  }
+
+  }
+
+
 // exports.deleteOne = async(req, res) => {
 //   const id = req.file.path
 //   songs
