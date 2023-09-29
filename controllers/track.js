@@ -20,37 +20,62 @@ exports.uploadSong = async (req, res) => {
   }
 };
 
-exports.getAllSongs = async(req, res)=>{
-
+exports.getAllSongs = async(req, res) => {
   const directoryPath = __basedir + "/uploads/";
-  const songs = await Track.find()
+
   fs.readdir(directoryPath, function (err, files){
+      if(err){
+          res.status(500).send({
+              message: "Unable to scan files ",
+          });
+      }
+  
+      let filesInfos = [];
+      let baseUrl = 'http://localhost:3000';
+
+      files.forEach((file) =>{
+          filesInfos.push({
+              name: file,
+              url : baseUrl + file,
+          });
+      });
+
+      res.status(200).send(filesInfos)
+  });
+
+};
+
+// exports.getAllSongs = async(req, res)=>{
+
+//   const directoryPath = __basedir + "/uploads/";
+//   const songs = await Track.find()
+//   fs.readdir(directoryPath, function (err, files){
     
-    try{
+//     try{
         
 
 
-        res.status(200).send(songs)
+//         res.status(200).send(songs)
     
     
     
-  }
-  catch(err){
-        res.status(500).json({err: "Internal Server Error"})
-    }
+//   }
+//   catch(err){
+//         res.status(500).json({err: "Internal Server Error"})
+//     }
 
-    let filesInfos = [];
-    let baseUrl = 'http://localhost:3000';
-    files.forEach((file) =>{
-      filesInfos.push({
-          name: file,
-          url : baseUrl + file,
-      });
-      res.status(200).send(filesInfos)
-  });
-})
+//     let filesInfos = [];
+//     let baseUrl = 'http://localhost:3000';
+//     files.forEach((file) =>{
+//       filesInfos.push({
+//           name: file,
+//           url : baseUrl + file,
+//       });
+//       res.status(200).send(filesInfos)
+//   });
+// })
   
-}
+// }
 
 // exports.getAllSongs = (req, res) => {
   
