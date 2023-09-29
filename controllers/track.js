@@ -1,15 +1,19 @@
 const Track = require('../models/track.model');
 const fs = require('fs')
+const fs = require('fs')
 
 exports.uploadSong = async (req, res) => {
   try {
-    const { title, artist, genre } = req.body;
+    const { title, artist, genre, album } = req.body;
     const url = req.file.path
-
     
 
-    const song = new Track({ title, artist, genre, url  });
+    const song = new Track({ title, artist, genre, album, url  });
     await song.save();
+
+    if (req.file == undefined) {
+      return res.status(400).send({ message: "Please upload a file!" });
+    }
 
     res.status(201).json({ message: 'Song uploaded successfully', song });
   } catch (error) {

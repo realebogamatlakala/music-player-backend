@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const tackRoutes = require('./routes/songsroutes');
+const songRoutes = require('./routes/songsroutes');
 const PORT = process.env.PORT || 3000;
 const app = express();
 const cors= require("cors")
@@ -17,6 +17,8 @@ app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+global.__basedir = __dirname;
+
 
 mongoose.connect('mongodb://127.0.0.1:27017/newMusic', 
     { useNewUrlParser: true, useUnifiedTopology: true }
@@ -25,7 +27,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/newMusic',
     .catch((e)=> console.log("Couldn't connect to DB: ", e));
 
 
-app.use('/api', tackRoutes);
+app.use('/api', songRoutes);
 
 
 app.listen(PORT, () => {
