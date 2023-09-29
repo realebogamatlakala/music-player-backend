@@ -3,11 +3,11 @@ const fs = require('fs')
 
 exports.uploadSong = async (req, res) => {
   try {
-    const { title, artist, genre } = req.body;
+    const { title, artist, genre, album } = req.body;
     const url = req.file.path
     
 
-    const song = new Track({ title, artist, genre, url  });
+    const song = new Track({ title, artist, genre, album, url  });
     await song.save();
 
     if (req.file == undefined) {
@@ -76,3 +76,34 @@ exports.getAllSongs = async(req, res)=>{
 //   });
 
 
+
+exports.getAudioById = async(req, res) => {
+  const audioId = req.file.path
+
+  try{
+    const audio = await Track.findById(audioId);
+    if(!audio){
+      return res.status(404).json({err: "Audio not found!"})
+    }else{
+      res.set('Content-Type', audio/mp3)
+      res.send(audio.AudioData);
+    }
+  }catch(error){
+    res.status(500).json({error: "Could not recieve audio"})
+  }
+
+  }
+
+
+// exports.deleteOne = async(req, res) => {
+//   const id = req.file.path
+//   songs
+//       .remove({ _id: id })
+//       .then(result => {
+//           res.status(200).json(result);
+//       })
+//       .catch(err => {
+//           console.log(err);
+//           res.status(500).json({"Error deleting the song" : err});
+//       });
+// };
