@@ -5,9 +5,6 @@ const trackSchema = new mongoose.Schema({
   artist: String,
   genre: String,
   url: String,
-
-  
-  
 });
 
 module.exports = mongoose.model('Track', trackSchema);
