@@ -1,4 +1,5 @@
 const Track = require('../models/track.model');
+const fs = require('fs')
 
 exports.uploadSong = async (req, res) => {
   try {
@@ -9,6 +10,10 @@ exports.uploadSong = async (req, res) => {
     const song = new Track({ title, artist, genre, url  });
     await song.save();
 
+    if (req.file == undefined) {
+      return res.status(400).send({ message: "Please upload a file!" });
+    }
+
     res.status(201).json({ message: 'Song uploaded successfully', song });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
@@ -16,10 +21,58 @@ exports.uploadSong = async (req, res) => {
 };
 
 exports.getAllSongs = async(req, res)=>{
+
+  const directoryPath = __basedir + "/uploads/";
+  const songs = await Track.find()
+  fs.readdir(directoryPath, function (err, files){
+    
     try{
-        const songs = await Track.find()
+        
+
+
         res.status(200).send(songs)
-    } catch(err){
+    
+    
+    
+  }
+  catch(err){
         res.status(500).json({err: "Internal Server Error"})
     }
+
+    let filesInfos = [];
+    let baseUrl = 'http://localhost:3000';
+    files.forEach((file) =>{
+      filesInfos.push({
+          name: file,
+          url : baseUrl + file,
+      });
+      res.status(200).send(filesInfos)
+  });
+})
+  
 }
+
+// exports.getAllSongs = (req, res) => {
+  
+
+//   fs.readdir(directoryPath, function (err, files){
+//       if(err){
+//           res.status(500).send({
+//               message: "Unable to scan files ",
+//           });
+//       }
+  
+//       let filesInfos = [];
+//       let baseUrl = 'http://localhost:3000';
+
+//       files.forEach((file) =>{
+//           filesInfos.push({
+//               name: file,
+//               url : baseUrl + file,
+//           });
+//       });
+
+//       res.status(200).send(filesInfos)
+//   });
+
+
