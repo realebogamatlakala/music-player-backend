@@ -1,6 +1,6 @@
 const Track = require('../models/track.model');
 const fs = require('fs')
-const fs = require('fs')
+
 
 exports.uploadSong = async (req, res) => {
   try {
@@ -21,41 +21,11 @@ exports.uploadSong = async (req, res) => {
   }
 };
 
-// exports.getAllSongs = async(req, res)=>{
-//     try{
-//         const songs = await Track.find()
-//         res.status(200).send(songs)
-//     } catch(err){
-//         res.status(500).json({err: "Internal Server Error"})
-//     }
-// }
 exports.getAllSongs = (req, res) => {
-  
-  // const directoryPath = __basedir + "/uploads/";
-  
-  // fs.readdir(directoryPath, function (err, files){
-  //     if(err){
-  //         res.status(500).send({
-  //             message: "Unable to scan files ",
-  //         });
-  //     }
-  
-  //     let filesInfos = [];
-  //     let baseUrl = 'http://localhost:3000';
 
-  //     files.forEach((file) =>{
-  //         filesInfos.push({
-  //             name: file,
-  //             url : baseUrl + file,
-  //         });
-  //     });
-
-  //     res.status(200).send(filesInfos)
-  // });
- Track.find()
-.then(data => {
-  // console.log(data)
-  res.send(data)
+        Track.find()
+        .then(data => {
+          res.send(data)
 })
 
 
@@ -63,16 +33,29 @@ exports.getAllSongs = (req, res) => {
 
 exports.getASong = async(req, res) => {
 
-   
-
-
   try{
     const id = req.params.id;
-    const ttrack = await Track.findById({id});
+    const ttrack = await Track.findById(id);
     
     res.status(200).send(ttrack);
 }
 catch(error){
     res.status(500).json({error: error.message});
 }
+
+
+}
+
+exports.deleteOne = async(req, res) => {
+  try 
+  {
+      const id = req.params.id;
+      
+      const ttrack = await Track.deleteOne(id);
+      res.status(200).json(ttrack);
+    } 
+    catch (error) 
+    {
+      res.status(500).json({ error: "Could not delete song" });
+    }
 }
